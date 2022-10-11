@@ -15,16 +15,19 @@ type handler struct {
 	serv service.Covider
 }
 
+// new Handler
 func New(r *gin.RouterGroup, serv service.Covider) {
 	handle := &handler{
 		serv: serv,
 	}
 
+	// mapping a handler with method type and path
 	r.GET("/summary", handle.summary)
 }
 
 func (h *handler) summary(c *gin.Context) {
-	resp, err := h.serv.CovidData()
+	// get data from service
+	covidInfos, err := h.serv.CovidData()
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": err.Error(),
@@ -33,13 +36,18 @@ func (h *handler) summary(c *gin.Context) {
 		return
 	}
 
+	// mapping data
 	provinceCount := make(map[string]int)
 	ageCount := make(map[string]int)
-	for _, row := range resp {
-		if row.ProvinceEn != "" {
-			provinceCount[row.ProvinceEn] += 1
+	// lopping get data from
+	for _, covidInfo := range covidInfos {
+		// validate have province or not
+		if covidInfo.ProvinceEn != "" {
+			provinceCount[covidInfo.ProvinceEn] += 1
 		}
-		switch rangeage.FindRangeAge(row.Age) {
+
+		// mapping range of age
+		switch rangeage.FindRangeAge(covidInfo.Age) {
 		case constant.UNKNOWN:
 			ageCount["N/A"] += 1
 		case constant.ADULT:

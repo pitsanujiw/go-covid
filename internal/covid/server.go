@@ -10,16 +10,20 @@ import (
 )
 
 func setup() *gin.Engine {
+	// new gin framework
 	router := gin.New()
 
 	router.Use(gin.Logger(), gin.Recovery())
-
+	// new http client
 	http := httpclient.New()
 
+	// new get covid summary service
 	covidSer := service.NewCovidServ(http)
 
+	// group api
 	covidRoute := router.Group("/covid")
 
+	// new handler
 	handler.New(covidRoute, covidSer)
 
 	return router
@@ -27,6 +31,6 @@ func setup() *gin.Engine {
 
 func Run() {
 	runner := setup()
-
+	// graceful shutdown
 	graceful.StartServerWithGracefulShutdown(runner)
 }
