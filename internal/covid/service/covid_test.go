@@ -87,6 +87,7 @@ func TestCovidData(t *testing.T) {
 		serv := NewCovidServ(client)
 
 		_, err := serv.CovidData()
+
 		require.Equal(t, err, constant.ErrConvertToStructError)
 	})
 
