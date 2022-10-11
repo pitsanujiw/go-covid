@@ -1,5 +1,7 @@
 # Simple JSON API to summarize COVID-19 stats using this public API
 
+Go version 1.18
+
 ## How to get dependencies
 
 ```bash
