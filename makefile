@@ -4,6 +4,6 @@ dev:
 test:
 	go test -v ./... -cover
 build-linux:
-	env GOOS=linux GOARCH=amd64 go build -o covid ./cmd/covid/main.go
+	GOOS=linux GOARCH=amd64 go build -o covid ./cmd/covid/main.go
 build-darwin:
-	env GOOS=darwin GOARCH=amd64 go build -o covid ./cmd/covid/main.go
+	eGOOS=darwin GOARCH=amd64 go build -o covid ./cmd/covid/main.go
