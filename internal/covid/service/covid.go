@@ -23,17 +23,22 @@ func NewCovidServ(client httpclient.HttpClienter) *covid {
 	}
 }
 
-func (c *covid) CovidData() (data []entity.CovidRecord, err error) {
+func (c *covid) CovidData() ([]entity.CovidRecord, error) {
 	resp, err := c.client.Get(constant.CovidUrl)
 	if err != nil {
 		return nil, constant.ErrGetRequestError
 	}
 
 	defer resp.Body.Close()
-	body, err := io.ReadAll(resp.Body)
+	body, bodyErr := io.ReadAll(resp.Body)
+
+	if bodyErr != nil {
+		return nil, constant.ErrGetRequestError
+	}
 
 	var records entity.CovidResponse
-	if err = json.Unmarshal(body, &records); err != nil {
+
+	if convertErr := json.Unmarshal(body, &records); convertErr != nil {
 		return nil, constant.ErrConvertToStructError
 	}
 
