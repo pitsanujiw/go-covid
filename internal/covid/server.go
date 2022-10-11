@@ -5,6 +5,7 @@ import (
 
 	"github.com/pitsanujiw/go-covid/internal/covid/handler"
 	"github.com/pitsanujiw/go-covid/internal/covid/service"
+	"github.com/pitsanujiw/go-covid/pkg/graceful"
 	"github.com/pitsanujiw/go-covid/pkg/httpclient"
 )
 
@@ -27,5 +28,5 @@ func setup() *gin.Engine {
 func Run() {
 	runner := setup()
 
-	runner.Run(":5000")
+	graceful.StartServerWithGracefulShutdown(runner)
 }
